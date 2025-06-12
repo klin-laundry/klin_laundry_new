@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Layanan - MR KLIN LAUNDRY</title>
+  <link rel="stylesheet" href="order.css" />
+  <script src="order.js" defer></script>
+</head>
+<body>
+  <header class="header-wrapper">
+    <h1>📦 Order Layanan Laundry</h1>
+    <p>Silakan lengkapi informasi laundry Anda di bawah ini untuk melanjutkan ke tahap pembayaran.</p>
+    <nav>
+      <a href="dashboard.html">🏠 Dashboard</a> |
+      <a href="booking.html">⬅️ Kembali</a>
+    </nav>
+    <hr />
+  </header>
+
+  <main>
+    <form id="formOrder">
+      <!-- INFORMASI PEMESAN -->
+      <fieldset>
+        <legend>👤 Informasi Pemesan</legend>
+        <p>Nama: <span id="outputNama">-</span></p>
+        <p>Alamat: <span id="outputAlamat">-</span></p>
+        <p>Tanggal: <span id="outputTanggal">-</span></p>
+        <p>Jam: <span id="outputJam">-</span></p>
+        <p>Layanan: <span id="outputLayanan">-</span></p>
+      </fieldset>
+
+      <!-- DETAIL ORDER -->
+      <fieldset>
+        <legend>🧺 Detail Order</legend>
+
+        <label for="tipeLayanan">Jenis Layanan:</label>
+        <select id="tipeLayanan" required>
+          <option value="">-- Pilih --</option>
+          <option value="Cuci Kering">Cuci Kering (Rp6.000/kg)</option>
+          <option value="Cuci + Setrika">Cuci + Setrika (Rp8.000/kg)</option>
+          <option value="Setrika Saja">Setrika Saja (Rp5.000/kg)</option>
+          <option value="Kilat 4 Jam">Kilat 4 Jam (Rp12.000/kg)</option>
+        </select>
+
+        <label for="berat">Berat Cucian (kg):</label>
+        <input type="number" id="berat" min="1" placeholder="Contoh: 3" required />
+
+        <label>Total Harga:</label>
+        <p id="totalHarga">Rp0</p>
+      </fieldset>
+
+      <button type="submit">💳 Lanjut ke Pembayaran</button>
+    </form>
+  </main>
+
+  <footer>
+    <hr />
+    <p style="text-align: center;">&copy; 2025 MR KLIN LAUNDRY | Layanan Laundry Online Cepat & Terpercaya</p>
+  </footer>
+</body>
+</html>

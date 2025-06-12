@@ -1,0 +1,92 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5faff;
+  padding: 2rem;
+  color: #333;
+}
+
+header h1, section h2 {
+  text-align: center;
+  color: #0066cc;
+}
+
+header p {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.btn-back {
+  display: block;
+  text-align: center;
+  margin: 1rem auto;
+  background-color: #0066cc;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.detail-pesanan, .progress-tracker {
+  margin: 2rem auto;
+  max-width: 800px;
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pesanan-info p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.status-info {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.progress-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tahapan {
+  flex: 1 1 120px;
+  text-align: center;
+  padding: 1rem;
+  background: #e6f0ff;
+  border-radius: 10px;
+  border: 2px solid #cce0ff;
+  transition: 0.3s;
+}
+
+.tahapan.aktif {
+  background: #d1f7d6;
+  border-color: #28a745;
+}
+
+.tahapan .icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.5rem;
+  background-color: #ccc;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  line-height: 40px;
+}
+
+.tahapan.aktif .icon {
+  background-color: #28a745;
+}
+
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: #888;
+}

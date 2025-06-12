@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kelola Status Pesanan - Admin</title>
+  <link rel="stylesheet" href="ubah-status.css" />
+  <script src="ubah-status.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>🛠️ Panel Kelola Status Pesanan</h1>
+    <p>Admin dapat memperbarui status pesanan pelanggan di sini.</p>
+    <a href="admin-dashboard.html" class="btn-back">⬅️ Kembali ke Dashboard</a>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Layanan</th>
+          <th>Total</th>
+          <th>Status Sekarang</th>
+          <th>Ubah Status</th>
+        </tr>
+      </thead>
+      <tbody id="daftarPesanan">
+        <!-- Data akan dimuat dengan JavaScript -->
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
