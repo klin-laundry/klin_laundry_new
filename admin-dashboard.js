@@ -15,10 +15,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const dataPesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
 
   // Hitung statistik
-  const totalPesanan = dataPesanan.length;
-  const selesai = dataPesanan.filter(p => p.status === "Selesai").length;
-  const proses = dataPesanan.filter(p => p.status === "Dalam Proses").length;
-  const penggunaUnik = [...new Set(dataPesanan.map(p => p.nama))];
+const totalPesanan = dataPesanan.length;
+const selesai = dataPesanan.filter(p => p.status.toLowerCase() === "selesai").length;
+
+// Logika baru: Pesanan dalam proses adalah total pesanan dikurangi pesanan yang sudah selesai.
+const proses = totalPesanan - selesai; 
+
+const penggunaUnik = [...new Set(dataPesanan.map(p => p.nama))];
 
   const metodeCount = {
     Tunai: 0,
