@@ -1,76 +1,62 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formOrder");
-  const beratInput = document.getElementById("berat");
-  const layananRadios = document.querySelectorAll('input[name="layanan"]');
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId");
 
-  const namaEl = document.getElementById("namaRingkasan");
-  const layananEl = document.getElementById("layananRingkasan");
-  const beratEl = document.getElementById("beratRingkasan");
-  const totalEl = document.getElementById("hargaRingkasan");
+  const semuaPesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
+  const pesanan = semuaPesanan.find(p => p.id === orderId);
 
-  // Ambil data dari booking sebelumnya
-  const bookingData = JSON.parse(localStorage.getItem("bookingData"));
+  const detailContainer = document.getElementById("detailPesanan");
+  const progressContainer = document.getElementById("progressStatus");
+  const statusText = document.getElementById("statusText");
 
-  if (!bookingData) {
-    alert("Data booking tidak ditemukan. Silakan isi form booking terlebih dahulu.");
-    window.location.href = "booking.html";
+  // Cek jika tidak ditemukan
+  if (!pesanan) {
+    detailContainer.innerHTML = `<p style="color:red;">❌ Pesanan dengan ID ${orderId} tidak ditemukan.</p>`;
+    statusText.textContent = "Gagal memuat status.";
     return;
   }
 
-  // Pre-fill form jika perlu
-  document.getElementById("nama").value = bookingData.nama;
-  document.getElementById("alamat").value = bookingData.alamat;
+  // Tampilkan detail pesanan
+  detailContainer.innerHTML = `
+    <p><strong>Nama:</strong> ${pesanan.nama}</p>
+    <p><strong>Layanan:</strong> ${pesanan.tipeLayanan || pesanan.layanan}</p>
+    <p><strong>Berat:</strong> ${pesanan.berat} kg</p>
+    <p><strong>Total:</strong> Rp${(pesanan.total || 0).toLocaleString("id-ID")}</p>
+    <p><strong>Waktu Order:</strong> ${pesanan.waktuOrder}</p>
+    <p><strong>Alamat:</strong> ${pesanan.alamat || "-"}</p>
+    <p><strong>Pembayaran:</strong> ${pesanan.metodePembayaran || "-"}</p>
+  `;
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  // List status progres
+  const statusSteps = [
+    "Pesanan Diterima", // 0
+    "Dalam Antrian",    // 1
+    "Dicuci",           // 2
+    "Disetrika",        // 3
+    "Dikemas",          // 4
+    "Dikirim",          // 5
+    "Selesai"           // 6
+  ];
 
-    const berat = parseFloat(beratInput.value);
-    const layananRadio = Array.from(layananRadios).find(r => r.checked);
+  const statusSekarang = pesanan.status || "Pesanan Diterima";
+  const indexAktif = statusSteps.indexOf(statusSekarang);
 
-    if (!berat || berat <= 0 || !layananRadio) {
-      alert("Silakan masukkan berat cucian dan pilih layanan.");
-      return;
-    }
+  statusText.innerHTML = `<strong>Status Saat Ini:</strong> ${statusSekarang}`;
 
-    const layanan = layananRadio.value;
-    const hargaPerKg = layanan === "Cuci + Setrika" ? 8000 : 5000;
-    const total = berat * hargaPerKg;
+  // Buat tampilan status progres
+  statusSteps.forEach((step, i) => {
+    const stepBox = document.createElement("div");
+    stepBox.classList.add("step-box");
+    if (i <= indexAktif) stepBox.classList.add("aktif");
 
-    // Buat objek pesanan lengkap
-    const orderData = {
-      id: "ORD" + Date.now(), // ✅ ID unik
-      nama: bookingData.nama,
-      alamat: bookingData.alamat,
-      tipeLayanan: layanan,
-      berat: berat,
-      total: total,
-      waktuOrder: new Date().toLocaleString("id-ID"),
-      metodePembayaran: null,
-      status: "Belum Dibayar"
-    };
+    stepBox.innerHTML = `
+      <div class="step-num">${i + 1}</div>
+      <div class="step-label">${step}</div>
+    `;
 
-    // Simpan ke localStorage (sebagai order aktif dan ke daftar semua pesanan)
-    localStorage.setItem("orderData", JSON.stringify(orderData));
-
-    const semuaPesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
-    semuaPesanan.push(orderData);
-    localStorage.setItem("pesanan", JSON.stringify(semuaPesanan));
-
-    // Redirect ke halaman pembayaran
-    window.location.href = "payment.html";
+    progressContainer.appendChild(stepBox);
   });
 
-  // Optional: Preview ringkasan pesanan (saat input berubah)
-  form.addEventListener("input", () => {
-    const berat = parseFloat(beratInput.value);
-    const layananRadio = Array.from(layananRadios).find(r => r.checked);
-    const layanan = layananRadio ? layananRadio.value : "-";
-    const hargaPerKg = layanan === "Cuci + Setrika" ? 8000 : 5000;
-    const total = berat ? berat * hargaPerKg : 0;
-
-    namaEl.textContent = bookingData.nama;
-    layananEl.textContent = layanan;
-    beratEl.textContent = berat ? `${berat} kg` : "-";
-    totalEl.textContent = total ? `Rp${total.toLocaleString("id-ID")}` : "-";
-  });
+  // Tampilkan tombol admin jika ID ditemukan
+  document.getElementById("adminUbahStatus").classList.remove("hidden");
 });
