@@ -1,14 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formOrder");
   const beratInput = document.getElementById("berat");
-  const layananRadios = document.querySelectorAll('input[name="layanan"]');
+  const tipeLayananSelect = document.getElementById("tipeLayanan");
+  const totalHargaEl = document.getElementById("totalHarga");
 
-  const namaEl = document.getElementById("namaRingkasan");
-  const layananEl = document.getElementById("layananRingkasan");
-  const beratEl = document.getElementById("beratRingkasan");
-  const totalEl = document.getElementById("hargaRingkasan");
+  const outputNama = document.getElementById("outputNama");
+  const outputAlamat = document.getElementById("outputAlamat");
+  const outputTanggal = document.getElementById("outputTanggal");
+  const outputJam = document.getElementById("outputJam");
+  const outputLayanan = document.getElementById("outputLayanan");
 
-  // Ambil data dari booking sebelumnya
+  // Ambil data dari booking
   const bookingData = JSON.parse(localStorage.getItem("bookingData"));
 
   if (!bookingData) {
@@ -17,30 +19,52 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Pre-fill form jika perlu
-  document.getElementById("nama").value = bookingData.nama;
-  document.getElementById("alamat").value = bookingData.alamat;
+  // Tampilkan data di ringkasan
+  outputNama.textContent = bookingData.nama;
+  outputAlamat.textContent = bookingData.alamat;
+  outputTanggal.textContent = bookingData.tanggal;
+  outputJam.textContent = bookingData.jam;
+  outputLayanan.textContent = bookingData.layanan;
+
+  // Fungsi untuk mendapatkan harga per kg
+  function getHargaPerKg(layanan) {
+    switch (layanan) {
+      case "Cuci Kering": return 6000;
+      case "Cuci + Setrika": return 8000;
+      case "Setrika Saja": return 5000;
+      case "Kilat 4 Jam": return 12000;
+      default: return 0;
+    }
+  }
+
+  form.addEventListener("input", () => {
+    const layanan = tipeLayananSelect.value;
+    const berat = parseFloat(beratInput.value);
+    const hargaPerKg = getHargaPerKg(layanan);
+    const total = layanan && berat ? berat * hargaPerKg : 0;
+    totalHargaEl.textContent = `Rp${total.toLocaleString("id-ID")}`;
+  });
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    const layanan = tipeLayananSelect.value;
     const berat = parseFloat(beratInput.value);
-    const layananRadio = Array.from(layananRadios).find(r => r.checked);
+    const hargaPerKg = getHargaPerKg(layanan);
+    const total = layanan && berat ? berat * hargaPerKg : 0;
 
-    if (!berat || berat <= 0 || !layananRadio) {
-      alert("Silakan masukkan berat cucian dan pilih layanan.");
+    if (!layanan || !berat || berat <= 0) {
+      alert("Harap pilih layanan dan isi berat cucian.");
       return;
     }
 
-    const layanan = layananRadio.value;
-    const hargaPerKg = layanan === "Cuci + Setrika" ? 8000 : 5000;
-    const total = berat * hargaPerKg;
-
-    // Buat objek pesanan lengkap
     const orderData = {
-      id: "ORD" + Date.now(), // ✅ ID unik
+      id: "ORD" + Date.now(),
       nama: bookingData.nama,
       alamat: bookingData.alamat,
+      tanggal: bookingData.tanggal,
+      jam: bookingData.jam,
+      metodeLayanan: bookingData.layanan,
       tipeLayanan: layanan,
       berat: berat,
       total: total,
@@ -49,28 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
       status: "Belum Dibayar"
     };
 
-    // Simpan ke localStorage (sebagai order aktif dan ke daftar semua pesanan)
+    // Simpan order ke localStorage
     localStorage.setItem("orderData", JSON.stringify(orderData));
 
     const semuaPesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
     semuaPesanan.push(orderData);
     localStorage.setItem("pesanan", JSON.stringify(semuaPesanan));
 
-    // Redirect ke halaman pembayaran
+    // Arahkan ke payment
     window.location.href = "payment.html";
-  });
-
-  // Optional: Preview ringkasan pesanan (saat input berubah)
-  form.addEventListener("input", () => {
-    const berat = parseFloat(beratInput.value);
-    const layananRadio = Array.from(layananRadios).find(r => r.checked);
-    const layanan = layananRadio ? layananRadio.value : "-";
-    const hargaPerKg = layanan === "Cuci + Setrika" ? 8000 : 5000;
-    const total = berat ? berat * hargaPerKg : 0;
-
-    namaEl.textContent = bookingData.nama;
-    layananEl.textContent = layanan;
-    beratEl.textContent = berat ? `${berat} kg` : "-";
-    totalEl.textContent = total ? `Rp${total.toLocaleString("id-ID")}` : "-";
   });
 });
