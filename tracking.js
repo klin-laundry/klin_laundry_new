@@ -6,34 +6,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const data = pesanan.find(p => p.id === orderId);
 
   if (!data) {
-    document.body.innerHTML = "<h2 style='text-align:center'>Data pesanan tidak ditemukan.</h2>";
+    document.getElementById("status-sekarang").textContent = "Data tidak ditemukan.";
     return;
   }
 
-  // Tampilkan detail pesanan
+  // Isi detail
   document.getElementById("nama").textContent = data.nama;
-  document.getElementById("layanan").textContent = data.layanan || "-";
+  document.getElementById("layanan").textContent = data.tipeLayanan;
   document.getElementById("berat").textContent = data.berat + " kg";
   document.getElementById("total").textContent = "Rp" + (data.total || 0).toLocaleString("id-ID");
-  document.getElementById("waktu").textContent = data.waktuOrder || "-";
-  document.getElementById("alamat").textContent = data.alamat || "-";
-  document.getElementById("pembayaran").textContent = data.metodePembayaran || "-";
+  document.getElementById("waktu").textContent = data.waktuOrder;
+  document.getElementById("alamat").textContent = data.alamat;
+  document.getElementById("pembayaran").textContent = data.metodePembayaran;
+  document.getElementById("status-sekarang").textContent = data.status;
 
-  // Status Progres
-  const statusSekarang = data.status || "Pesanan Diterima";
-  document.getElementById("status-sekarang").textContent = statusSekarang;
-
-  const semuaLangkah = [
+  // Status tracker
+  const steps = [
     "Pesanan Diterima", "Dalam Antrian", "Dicuci",
     "Disetrika", "Dikemas", "Dikirim", "Selesai"
   ];
 
-  semuaLangkah.forEach((status, index) => {
-    const elemen = document.getElementById(`step-${index + 1}`);
-    if (elemen) {
-      if (semuaLangkah.indexOf(statusSekarang) >= index) {
-        elemen.classList.add("aktif");
-      }
+  const statusIndex = steps.indexOf(data.status);
+
+  steps.forEach((_, i) => {
+    const stepEl = document.getElementById(`step-${i + 1}`);
+    if (i <= statusIndex && stepEl) {
+      stepEl.classList.add("active");
     }
   });
 });
