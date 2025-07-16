@@ -1,60 +1,39 @@
-// Tambahkan ini di atas kode tracking.js yang lama
-const adminBtn = document.getElementById("adminUbahStatus");
-const adminMode = localStorage.getItem("adminMode") === "true";
-if (adminMode && adminBtn) {
-  adminBtn.classList.remove("hidden");
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const statusText = document.getElementById("statusText");
-  const progressContainer = document.getElementById("progressStatus");
-  const detailContainer = document.getElementById("detailPesanan");
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get("orderId");
 
-  const semuaPesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
+  const pesanan = JSON.parse(localStorage.getItem("pesanan")) || [];
+  const data = pesanan.find(p => p.id === orderId);
 
-  if (semuaPesanan.length === 0) {
-    statusText.textContent = "Data pesanan tidak ditemukan.";
+  if (!data) {
+    document.body.innerHTML = "<h2 style='text-align:center'>Data pesanan tidak ditemukan.</h2>";
     return;
   }
 
-  // Ambil pesanan terbaru (opsional: bisa berdasarkan ID pengguna aktif)
-  const pesanan = semuaPesanan[semuaPesanan.length - 1];
-
   // Tampilkan detail pesanan
-  detailContainer.innerHTML = `
-    <p><strong>Nama:</strong> ${pesanan.nama}</p>
-    <p><strong>Layanan:</strong> ${pesanan.tipeLayanan}${pesanan.layanan ? " - " + pesanan.layanan : ""}</p>
-    <p><strong>Berat:</strong> ${pesanan.berat} kg</p>
-    <p><strong>Total Harga:</strong> Rp${(pesanan.total || pesanan.totalHarga || 0).toLocaleString("id-ID")}</p>
-    <p><strong>Waktu:</strong> ${pesanan.waktuOrder || pesanan.tanggal || "-"}, ${pesanan.jam || ""}</p>
-    <p><strong>Alamat:</strong> ${pesanan.alamat || "-"}</p>
-    <p><strong>Pembayaran:</strong> ${pesanan.metodePembayaran || "-"}</p>
-  `;
+  document.getElementById("nama").textContent = data.nama;
+  document.getElementById("layanan").textContent = data.layanan || "-";
+  document.getElementById("berat").textContent = data.berat + " kg";
+  document.getElementById("total").textContent = "Rp" + (data.total || 0).toLocaleString("id-ID");
+  document.getElementById("waktu").textContent = data.waktuOrder || "-";
+  document.getElementById("alamat").textContent = data.alamat || "-";
+  document.getElementById("pembayaran").textContent = data.metodePembayaran || "-";
 
-  // Status progres
-  const semuaStatus = [
-    "Pesanan Diterima",
-    "Dalam Antrian",
-    "Dicuci",
-    "Disetrika",
-    "Dikemas",
-    "Dikirim",
-    "Selesai"
+  // Status Progres
+  const statusSekarang = data.status || "Pesanan Diterima";
+  document.getElementById("status-sekarang").textContent = statusSekarang;
+
+  const semuaLangkah = [
+    "Pesanan Diterima", "Dalam Antrian", "Dicuci",
+    "Disetrika", "Dikemas", "Dikirim", "Selesai"
   ];
 
-  const statusSekarang = pesanan.status || "Dalam Antrian";
-  const currentIndex = semuaStatus.indexOf(statusSekarang);
-
-  statusText.textContent = `Status Saat Ini: ${statusSekarang}`;
-
-  semuaStatus.forEach((tahap, i) => {
-    const langkah = document.createElement("div");
-    langkah.className = "tahapan";
-    if (i <= currentIndex) langkah.classList.add("aktif");
-    langkah.innerHTML = `
-      <div class="icon">${i + 1}</div>
-      <p>${tahap}</p>
-    `;
-    progressContainer.appendChild(langkah);
+  semuaLangkah.forEach((status, index) => {
+    const elemen = document.getElementById(`step-${index + 1}`);
+    if (elemen) {
+      if (semuaLangkah.indexOf(statusSekarang) >= index) {
+        elemen.classList.add("aktif");
+      }
+    }
   });
 });
