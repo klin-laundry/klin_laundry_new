@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
     pesanan = [];
   }
 
-  function buatDropdown(index, selectedStatus) {
+  function buatDropdown(orderId, selectedStatus) {
     return `
-      <select class="ubah-status" data-index="${index}">
+      <select class="ubah-status" data-id="${orderId}">
         ${opsiStatus.map(status =>
           `<option value="${status}" ${status === selectedStatus ? "selected" : ""}>${status}</option>`
         ).join("")}
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    pesanan.forEach((item, index) => {
+    pesanan.forEach((item) => {
       const row = document.createElement("tr");
 
       row.innerHTML = `
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${item.layanan || item.tipeLayanan || "-"}</td>
         <td>Rp${(item.total || item.totalHarga || 0).toLocaleString("id-ID")}</td>
         <td class="status-cell">${item.status || "Belum Ada"}</td>
-        <td>${buatDropdown(index, item.status || "Pesanan Diterima")}</td>
+        <td>${buatDropdown(item.id, item.status || "Pesanan Diterima")}</td>
       `;
 
       tbody.appendChild(row);
@@ -49,10 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   tbody.addEventListener("change", (e) => {
     if (e.target.classList.contains("ubah-status")) {
-      const index = parseInt(e.target.dataset.index);
+      const orderId = e.target.dataset.id;
       const statusBaru = e.target.value;
 
-      if (!isNaN(index) && pesanan[index]) {
+      const index = pesanan.findIndex(p => p.id === orderId);
+      if (index !== -1) {
         pesanan[index].status = statusBaru;
         localStorage.setItem("pesanan", JSON.stringify(pesanan));
 
