@@ -3,116 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pelacakan Pesanan | MR KLIN LAUNDRY</title>
+  <title>Status Pesanan - MR KLIN LAUNDRY</title>
   <link rel="stylesheet" href="tracking.css" />
   <script src="tracking.js" defer></script>
-  <style>
-    :root {
-      --primary: #1565c0;
-      --secondary: #0d47a1;
-      --gray: #f0f0f0;
-      --text: #333;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #fafafa;
-      color: var(--text);
-    }
-
-    header, footer {
-      text-align: center;
-      padding: 1.5rem;
-      background: var(--gray);
-    }
-
-    h1, h2 {
-      color: var(--primary);
-    }
-
-    .btn-back, .btn-update-status {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-
-    .btn-back {
-      background: #ccc;
-      color: #000;
-    }
-
-    .btn-update-status {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .btn-update-status:hover {
-      background-color: var(--secondary);
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 1rem;
-    }
-
-    .info-box {
-      background: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-    }
-
-    .info-box p {
-      margin: 0.5rem 0;
-      line-height: 1.6;
-    }
-
-    .status-step {
-      flex: 1;
-      text-align: center;
-      padding: 1rem;
-      background: #e0e0e0;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .status-step.aktif {
-      background: var(--primary);
-      color: white;
-      font-weight: bold;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .progress-bar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
+  <header class="header">
     <h1>📦 Pelacakan Status Pesanan</h1>
-    <p>Lacak status laundry Anda secara real-time.</p>
+    <p>Lacak status pesanan laundry Anda secara real-time</p>
     <a href="riwayat.html" class="btn-back">⬅ Kembali ke Riwayat</a>
   </header>
 
-  <!-- ISI -->
   <main class="container">
-    <!-- DETAIL PESANAN -->
-    <section class="info-box" id="detailPesanan">
+    <!-- DETAIL -->
+    <section class="card">
       <h2>🧾 Detail Pesanan</h2>
       <p><strong>Nama:</strong> <span id="nama">-</span></p>
       <p><strong>Layanan:</strong> <span id="layanan">-</span></p>
@@ -123,30 +27,24 @@
       <p><strong>Pembayaran:</strong> <span id="pembayaran">-</span></p>
     </section>
 
-    <!-- STATUS -->
-    <section class="info-box">
+    <!-- PROGRESS -->
+    <section class="card">
       <h2>🚚 Status Pesanan Anda</h2>
-      <p><strong>Status Saat Ini:</strong> <span id="status-sekarang">-</span></p>
-      <div id="progressStatus" class="progress-bar">
-        <div id="step-1" class="status-step">1. Pesanan Diterima</div>
-        <div id="step-2" class="status-step">2. Dalam Antrian</div>
-        <div id="step-3" class="status-step">3. Dicuci</div>
-        <div id="step-4" class="status-step">4. Disetrika</div>
-        <div id="step-5" class="status-step">5. Dikemas</div>
-        <div id="step-6" class="status-step">6. Dikirim</div>
-        <div id="step-7" class="status-step">7. Selesai</div>
-      </div>
+      <p><strong>Status Saat Ini:</strong> <span id="status-sekarang">Memuat status...</span></p>
+      <ul class="progressbar" id="progressBar">
+        <li id="step-1">🧾 Diterima</li>
+        <li id="step-2">🕐 Antrian</li>
+        <li id="step-3">🧺 Dicuci</li>
+        <li id="step-4">💨 Disetrika</li>
+        <li id="step-5">📦 Dikemas</li>
+        <li id="step-6">🚚 Dikirim</li>
+        <li id="step-7">✅ Selesai</li>
+      </ul>
     </section>
-
-    <!-- TOMBOL ADMIN -->
-    <div style="text-align: center;">
-      <a href="ubah-status.html" id="adminUbahStatus" class="btn-update-status hidden">🔧 Kelola Status (Admin)</a>
-    </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 MR KLIN LAUNDRY | Sistem Pelacakan Pesanan</p>
+  <footer class="footer">
+    <p>&copy; 2025 MR KLIN LAUNDRY | Pelacakan Cepat & Akurat</p>
   </footer>
 </body>
 </html>
