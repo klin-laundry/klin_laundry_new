@@ -3,23 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pelacakan Status Pesanan - MR KLIN LAUNDRY</title>
+  <title>Pelacakan Pesanan | MR KLIN LAUNDRY</title>
   <link rel="stylesheet" href="tracking.css" />
   <script src="tracking.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #eef2f7;
+    }
+
+    h1, h2 {
+      color: #1565c0;
+    }
+
+    .btn-back {
+      display: inline-block;
+      padding: 10px 16px;
+      margin-top: 1rem;
+      background-color: #ccc;
+      color: #000;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .info-box {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .info-box p {
+      margin: 0.5rem 0;
+    }
+
+    .progress-wrapper {
+      margin-top: 1rem;
+    }
+
+    .progressbar {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .progressbar li {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 12px 8px;
+      background-color: #e0e0e0;
+      color: #444;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .progressbar li.active {
+      background-color: #1565c0;
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(21, 101, 192, 0.3);
+    }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
-  <header class="tracking-header" style="text-align:center; padding: 20px;">
+  <header>
     <h1>📦 Pelacakan Status Pesanan</h1>
-    <p>Lihat perkembangan layanan laundry Anda secara real-time di bawah ini.</p>
-    <a href="riwayat.html" class="btn-back">⬅️ Kembali ke Riwayat</a>
-    <hr />
+    <p>Lihat perkembangan layanan laundry Anda secara real-time.</p>
+    <a href="riwayat.html" class="btn-back">⬅ Kembali ke Riwayat</a>
   </header>
 
-  <!-- DETAIL PESANAN -->
-  <section class="detail-pesanan" style="padding: 0 20px;">
-    <h2>🧾 Detail Pesanan Anda</h2>
-    <div class="pesanan-info" id="detailPesanan">
+  <!-- ISI -->
+  <main class="container">
+    <!-- DETAIL PESANAN -->
+    <section class="info-box" id="detailPesanan">
+      <h2>🧾 Detail Pesanan Anda</h2>
       <p><strong>Nama:</strong> <span id="nama">-</span></p>
       <p><strong>Layanan:</strong> <span id="layanan">-</span></p>
       <p><strong>Berat:</strong> <span id="berat">-</span></p>
@@ -27,29 +107,29 @@
       <p><strong>Waktu Order:</strong> <span id="waktu">-</span></p>
       <p><strong>Alamat:</strong> <span id="alamat">-</span></p>
       <p><strong>Pembayaran:</strong> <span id="pembayaran">-</span></p>
-    </div>
-  </section>
+    </section>
 
-  <!-- STATUS PESANAN -->
-  <section class="progress-tracker" style="padding: 0 20px;">
-    <h2>🚚 Status Pesanan Anda</h2>
-    <p><strong>Status Saat Ini:</strong> <span id="status-sekarang">Memuat status...</span></p>
-
-    <div class="status-steps">
-      <div class="status-item" id="step-1">🧾 Diterima</div>
-      <div class="status-item" id="step-2">🕐 Antrian</div>
-      <div class="status-item" id="step-3">🧺 Dicuci</div>
-      <div class="status-item" id="step-4">💨 Disetrika</div>
-      <div class="status-item" id="step-5">📦 Dikemas</div>
-      <div class="status-item" id="step-6">🚚 Dikirim</div>
-      <div class="status-item" id="step-7">✅ Selesai</div>
-    </div>
-  </section>
+    <!-- STATUS PESANAN -->
+    <section class="info-box">
+      <h2>🚚 Status Pesanan Anda</h2>
+      <p><strong>Status Saat Ini:</strong> <span id="status-sekarang">Memuat...</span></p>
+      <div class="progress-wrapper">
+        <ul class="progressbar" id="progressStatus">
+          <li id="step-1">🧾 Diterima</li>
+          <li id="step-2">🕐 Antrian</li>
+          <li id="step-3">🧺 Dicuci</li>
+          <li id="step-4">💨 Disetrika</li>
+          <li id="step-5">📦 Dikemas</li>
+          <li id="step-6">🚚 Dikirim</li>
+          <li id="step-7">✅ Selesai</li>
+        </ul>
+      </div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
-  <footer class="tracking-footer" style="text-align:center; padding: 20px;">
-    <hr />
-    <p>&copy; 2025 MR KLIN LAUNDRY | Pelacakan Status Pesanan Cepat & Akurat</p>
+  <footer>
+    <p>&copy; 2025 MR KLIN LAUNDRY | Sistem Pelacakan Pesanan</p>
   </footer>
 </body>
 </html>
