@@ -6,13 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const data = pesanan.find(p => p.id === orderId);
 
   if (!data) {
-    document.getElementById("status-sekarang").textContent = "Data tidak ditemukan.";
+    document.getElementById("status-sekarang").textContent = "Pesanan tidak ditemukan.";
+    console.error("Order ID tidak ditemukan:", orderId);
     return;
   }
 
-  // Isi detail
+  // Tampilkan detail pesanan
   document.getElementById("nama").textContent = data.nama;
-  document.getElementById("layanan").textContent = data.tipeLayanan;
+  document.getElementById("layanan").textContent = data.tipeLayanan || data.layanan;
   document.getElementById("berat").textContent = data.berat + " kg";
   document.getElementById("total").textContent = "Rp" + (data.total || 0).toLocaleString("id-ID");
   document.getElementById("waktu").textContent = data.waktuOrder;
@@ -20,18 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("pembayaran").textContent = data.metodePembayaran;
   document.getElementById("status-sekarang").textContent = data.status;
 
-  // Status tracker
-  const steps = [
+  // Progress visual
+  const semuaLangkah = [
     "Pesanan Diterima", "Dalam Antrian", "Dicuci",
     "Disetrika", "Dikemas", "Dikirim", "Selesai"
   ];
 
-  const statusIndex = steps.indexOf(data.status);
+  const indexStatus = semuaLangkah.indexOf(data.status);
 
-  steps.forEach((_, i) => {
-    const stepEl = document.getElementById(`step-${i + 1}`);
-    if (i <= statusIndex && stepEl) {
-      stepEl.classList.add("active");
+  semuaLangkah.forEach((_, index) => {
+    const el = document.getElementById(`step-${index + 1}`);
+    if (el && index <= indexStatus) {
+      el.classList.add("active");
     }
   });
 });
